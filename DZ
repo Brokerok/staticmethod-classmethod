@@ -1,0 +1,45 @@
+class StaticMethod:
+    def __init__(self, f):
+        self.f = f
+
+    def __get__(self, obj, objtype=None):
+        return self.f
+
+    def __call__(self, *args, **kwargs):
+        return self.f(*args, **kwargs)
+        
+        
+class Test:
+    @StaticMethod
+    def a(b):
+        return b * 5
+        
+        
+print(Test.a(5))
+print(Test().a(5))
+
+
+
+
+        
+class ClassMethod:
+
+    def __init__(self, f):
+        self.f = f
+
+    def __get__(self, obj, cls=None):
+        if cls is None:
+            cls = type(obj)
+        if hasattr(type(self.f), '__get__'):
+            return self.f.__get__(cls, cls)
+        return MethodType(self.f, cls)
+        
+        
+ class Test2:
+    @ClassMethod
+    def b(cls, a):
+        return cls.__name__, a
+        
+        
+print(Test2.b(3))
+print(Test2().b(3))
