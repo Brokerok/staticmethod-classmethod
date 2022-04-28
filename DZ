@@ -35,7 +35,7 @@ class ClassMethod:
         return MethodType(self.f, cls)
         
         
- class Test2:
+class Test2:
     @ClassMethod
     def b(cls, a):
         return cls.__name__, a
